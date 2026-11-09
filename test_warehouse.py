@@ -18,7 +18,17 @@ class TestWarehouseTDD(unittest.TestCase):
     def test_add_new_product(self):
         product_id = self.warehouse.add_product("Ноутбук", 10)
         self.assertEqual(self.warehouse.get_quantity(product_id), 10)
+    def test_search_products_by_name(self):
+        self.warehouse.add_product("Ноутбук Lenovo", 5)
+        self.warehouse.add_product("Ноутбук HP", 3)
+        self.warehouse.add_product("Монитор Samsung", 8)
 
+        results = self.warehouse.search_products("Ноутбук")
+
+        self.assertEqual(len(results), 2)
+        self.assertTrue(
+            all("Ноутбук" in product["name"] for product in results)
+        )
     def test_duplicate_product_is_rejected(self):
         self.warehouse.add_product("Ноутбук", 2)
         with self.assertRaises(ValueError):
