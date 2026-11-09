@@ -28,3 +28,12 @@ jobs:
 
       - name: Run unit tests
         run: python -m unittest -v
+
+      - name: Generate documentation
+        run: python generate_docs.py
+
+      - name: Upload documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: warehouse-documentation
+          path: docs/
