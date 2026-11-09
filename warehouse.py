@@ -117,7 +117,22 @@ class Warehouse:
             "SELECT id, name, quantity, unit FROM products ORDER BY name"
         ).fetchall()
         return [dict(row) for row in rows]
+    
+    def search_products(self, keyword):
+        """Поиск товаров по названию."""
+        keyword = keyword.strip()
 
+        rows = self.conn.execute(
+            """
+            SELECT id, name, quantity, unit
+            FROM products
+            WHERE name LIKE ?
+            ORDER BY name
+            """,
+            (f"%{keyword}%",)
+        ).fetchall()
+
+        return [dict(row) for row in rows]
     def get_movements(self, product_id=None):
         query = """
             SELECT m.id, p.name AS product_name, m.movement_type,
